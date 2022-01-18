@@ -12,6 +12,10 @@ Kaspa一键挖矿
 
 第三步一键启动，如果前两步已经配置好，直接运行release里的文件即可
 
+端口默认端口空着就可以
+![图片alt](/readme/usage.jpg "图片title")
+
+
 具体可以参考官方文档。
 https://github.com/kaspanet/docs/blob/main/Getting%20Started/Full%20Node%20Installation.md
 
@@ -41,10 +45,11 @@ GPU版本 https://github.com/tmrlvi/kaspa-miner/releases
     目前这些都不是强制的，算是对开发者的支持。
 
 官方的核心运行时会显示抽水比例以及抽水账户，不用担心暗抽。
-![图片alt](./readme/1.png "图片title")
+![图片alt](/readme/1.png "图片title")
 
 
 如果你觉得有帮助 欢迎直接支持一下
+
 kaspa:qpjrxsq6e06l09agkj7qyzqz59ydxvvlqlf7gmu6q5mm4au0j0de2rr9dk3qv
 
 ## 下一阶段目标
