@@ -41,5 +41,5 @@ GPU版本 https://github.com/tmrlvi/kaspa-miner/releases
 ![图片alt](./readme/1.png "图片title")
 
 
-如果你觉得有帮助 也可以直接支持一下
+如果你觉得有帮助 欢迎直接支持一下
 kaspa:qpjrxsq6e06l09agkj7qyzqz59ydxvvlqlf7gmu6q5mm4au0j0de2rr9dk3qv
