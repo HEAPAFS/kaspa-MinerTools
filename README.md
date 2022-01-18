@@ -23,6 +23,9 @@ https://mp.weixin.qq.com/s/KFwyfnRv5glxXuhaDHlJMQ
 ## 注意事项 ！
 请使用官方提供的内核！官方内核是开源的，最安全，release里面提供的即是官方内核（不同版本，按需求选择，最新版本似乎不是很稳定），如果不放心，自行下载即可。
 
+有些版本似乎兼容有问题，可以尝试一下不同版本，以及升级驱动
+    N卡要求 驱动版本490一上
+
 CPU版本 https://github.com/elichai/kaspa-miner/releases/tag/v0.2.1
 
 GPU版本 https://github.com/tmrlvi/kaspa-miner/releases
@@ -43,3 +46,6 @@ GPU版本 https://github.com/tmrlvi/kaspa-miner/releases
 
 如果你觉得有帮助 欢迎直接支持一下
 kaspa:qpjrxsq6e06l09agkj7qyzqz59ydxvvlqlf7gmu6q5mm4au0j0de2rr9dk3qv
+
+## 下一阶段目标
+加入钱包功能
