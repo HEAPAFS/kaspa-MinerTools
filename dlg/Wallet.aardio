@@ -1,0 +1,41 @@
+import win.ui;
+/*DSG{{*/
+var winform = win.form(text="钱包功能";right=759;bottom=469)
+winform.add(
+button={cls="button";text="Button";left=366;top=44;right=591;bottom=95;z=1};
+button2={cls="button";text="Button";left=83;top=147;right=312;bottom=203;z=3};
+exePath={cls="edit";text="kaspawallet";left=95;top=50;right=286;bottom=84;edge=1;multiline=1;z=2}
+)
+/*}}*/
+
+import fsys.dlg;
+import process
+import process.popen
+import console
+
+
+winform.button.oncommand = function(id,event){
+	winform.exePath.text = fsys.dlg.open();
+}
+
+winform.button2.oncommand = function(id,event){
+	
+	
+
+var prcs = process.popen(winform.exePath.text+" " +" start-daemon")
+	
+	for( all,out,err in prcs.each() ){
+    	console.log( all ); 
+    	
+    
+	}
+	
+var prcs2 = process.popen(winform.exePath.text+" " +" balance")
+	
+	console.pause();
+
+}
+
+winform.show();
+win.loopMessage();
+return winform;
