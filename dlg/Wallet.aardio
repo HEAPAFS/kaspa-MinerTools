@@ -1,10 +1,17 @@
 import win.ui;
 /*DSG{{*/
-var winform = win.form(text="钱包功能";right=759;bottom=469)
+var winform = win.form(text="钱包功能";right=532;bottom=673)
 winform.add(
-button={cls="button";text="Button";left=366;top=44;right=591;bottom=95;z=1};
-button2={cls="button";text="Button";left=83;top=147;right=312;bottom=203;z=3};
-exePath={cls="edit";text="kaspawallet";left=95;top=50;right=286;bottom=84;edge=1;multiline=1;z=2}
+butS={cls="button";text="启动守护进程(start-daemon)";left=288;top=79;right=494;bottom=103;z=3};
+button={cls="button";text="选择钱包执行文件";left=287;top=26;right=494;bottom=49;z=1};
+button2={cls="button";text="1 创建账户！";left=49;top=133;right=149;bottom=158;bgcolor=255;color=255;z=5};
+button3={cls="button";text="2 添加地址 ";left=192;top=132;right=293;bottom=157;bgcolor=255;color=255;z=9};
+button4={cls="button";text="3 显示地址 ";left=341;top=132;right=442;bottom=157;bgcolor=255;color=255;z=10};
+edit={cls="edit";text="127.0.0.1";left=34;top=80;right=229;bottom=103;edge=1;multiline=1;z=6};
+groupbox={cls="groupbox";text="创建钱包";left=35;top=113;right=514;bottom=171;edge=1;z=4};
+logs={cls="richedit";left=25;top=503;right=486;bottom=644;edge=1;font=LOGFONT(h=-16;name='黑体');multiline=1;readonly=1;vscroll=1;wrap=1;z=8};
+static={cls="static";text="节点服务器地址，本机节点不需要更改";left=35;top=60;right=249;bottom=82;notify=1;transparent=1;z=7};
+walletPath={cls="edit";text="kaspawallet.exe";left=34;top=28;right=229;bottom=51;edge=1;multiline=1;z=2}
 )
 /*}}*/
 
@@ -12,28 +19,90 @@ import fsys.dlg;
 import process
 import process.popen
 import console
+import thread
 
+winform.edit.text = winForm.serverAddress.text;
+var prcs=null;
 
 winform.button.oncommand = function(id,event){
-	winform.exePath.text = fsys.dlg.open();
+	winform.walletPath.text = fsys.dlg.open();
 }
 
-winform.button2.oncommand = function(id,event){
+winform.butS.oncommand = function(id,event){
 	
-	
-
-var prcs = process.popen(winform.exePath.text+" " +" start-daemon")
-	
-	for( all,out,err in prcs.each() ){
-    	console.log( all ); 
-    	
-    
+	if(prcs != null){
+		winform.logs.appendText("Is on");
+		return ; 
 	}
 	
-var prcs2 = process.popen(winform.exePath.text+" " +" balance")
+	if(string.len(winform.edit.text)>1){
+		prcs = process.popen(winform.walletPath.text, winform.walletPath.text+ " start-daemon" + " -s "+ winform.edit.text  );	
+	}else{
+		prcs = process.popen(winform.walletPath.text, winform.walletPath.text+ " start-daemon" );
+	}
 	
-	console.pause();
+	for( all,out,err in prcs.each() ){
+			//console.log( out,"error:",err );
+			winform.logs.appendText(all);
+			winform.logs.vScroll(7/*_SB_BOTTOM*/);
+			//mainForm.logs.appendText(out);
+	}
+}
 
+winform.groupbox.oncommand = function(id,event){
+	
+}
+
+winform.static.oncommand = function(id,event){
+	
+}
+
+winform.onClose = function(hwnd,message,wParam,lParam){ 
+    
+    try{
+        if(prcs!=null){
+    		//mainForm.msgbox(type());
+    		prcs.terminate();
+    	}
+    }
+    catch(e){
+    	//mainForm.msgbox(e);
+    }
+}
+
+//创建钱包的提示
+winform.button2.oncommand = function(id,event){
+	winform.msgbox("注意！ 创建钱包请使用同目录下的bat文件,
+对于有资产的账户，在对自己的密钥文件/助记词进行妥善备份前，请谨慎多次创建账户！
+（此行为可能会对之前的文件造成覆盖！） ")
+}
+
+winform.button3.oncommand = function(id,event){
+	var pcss = process.popen(winform.walletPath.text, winform.walletPath.text+ " new-address");
+	winform.logs.text=""
+	if(pcss==null){
+		winform.msgbox("选择正确的钱包exe")
+	}
+	for( all,out,err in pcss.each() ){
+			//console.log( out,"error:",err );
+			winform.logs.appendText(all);
+			//winform.logs.vScroll(7/*_SB_BOTTOM*/);
+			//mainForm.logs.appendText(out);
+	}	
+}
+
+winform.button4.oncommand = function(id,event){
+	var pcss = process.popen(winform.walletPath.text, winform.walletPath.text+ "  show-addresses");
+	winform.logs.text=""
+	if(pcss==null){
+		winform.msgbox("选择正确的钱包exe")
+	}
+	for( all,out,err in pcss.each() ){
+			//console.log( out,"error:",err );
+			winform.logs.appendText(all);
+			//winform.logs.vScroll(7/*_SB_BOTTOM*/);
+			//mainForm.logs.appendText(out);
+	}
 }
 
 winform.show();

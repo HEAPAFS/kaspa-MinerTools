@@ -23,6 +23,8 @@ static6={cls="static";text="附加参数";left=222;top=161;right=416;bottom=183;
 import fsys.dlg;
 import process
 
+
+
 winForm.kernelbutton.oncommand = function(id,event){
 	winForm.path.text = fsys.dlg.open();
 }
@@ -63,7 +65,13 @@ winForm.static2.oncommand = function(id,event){
 	winForm.address.showInfoTip("目标钱包地址")
 }
 
+winForm.address.oncommand = function(id,event){
+	
+}
 
+winForm.serverAddress.oncommand = function(id,event){
+	
+}
 
 winForm.show();
 return win.loopMessage();
