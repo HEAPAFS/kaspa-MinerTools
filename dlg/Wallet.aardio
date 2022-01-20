@@ -126,6 +126,7 @@ winform.button5.oncommand = function(id,event){
 	}
 }
 
+/**
 winform.button6.oncommand = function(id,event){
 	
 	thread.invoke(
@@ -164,7 +165,7 @@ winform.button6.oncommand = function(id,event){
 		},winform
 	) 
 }
-
+**/
 winform.button7.oncommand = function(id,event){
 	var args=" send" + " -t " + winform.taddress.text + " -v " + winform.amount.text;
 	
