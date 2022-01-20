@@ -1,17 +1,26 @@
 import win.ui;
 /*DSG{{*/
-var winform = win.form(text="钱包功能";right=532;bottom=673)
+var winform = win.form(text="钱包功能";right=767;bottom=673)
 winform.add(
+amount={cls="edit";text="0";left=44;top=348;right=172;bottom=368;edge=1;num=1;z=14};
 butS={cls="button";text="启动守护进程(start-daemon)";left=288;top=79;right=494;bottom=103;z=3};
 button={cls="button";text="选择钱包执行文件";left=287;top=26;right=494;bottom=49;z=1};
 button2={cls="button";text="1 创建账户！";left=49;top=133;right=149;bottom=158;bgcolor=255;color=255;z=5};
 button3={cls="button";text="2 添加地址 ";left=192;top=132;right=293;bottom=157;bgcolor=255;color=255;z=9};
 button4={cls="button";text="3 显示地址 ";left=341;top=132;right=442;bottom=157;bgcolor=255;color=255;z=10};
+button5={cls="button";text="显示余额";left=45;top=192;right=251;bottom=216;z=11};
+button6={cls="button";text="导出助记词（需要密码";left=44;top=235;right=250;bottom=259;z=12};
+button7={cls="button";text="转账（需要密码";left=47;top=298;right=253;bottom=322;z=13};
 edit={cls="edit";text="127.0.0.1";left=34;top=80;right=229;bottom=103;edge=1;multiline=1;z=6};
 groupbox={cls="groupbox";text="创建钱包";left=35;top=113;right=514;bottom=171;edge=1;z=4};
-logs={cls="richedit";left=25;top=503;right=486;bottom=644;edge=1;font=LOGFONT(h=-16;name='黑体');multiline=1;readonly=1;vscroll=1;wrap=1;z=8};
+logs={cls="richedit";left=27;top=503;right=713;bottom=644;edge=1;font=LOGFONT(h=-16;name='黑体');multiline=1;readonly=1;vscroll=1;wrap=1;z=8};
+pass={cls="edit";left=300;top=252;right=468;bottom=275;edge=1;z=16};
 static={cls="static";text="节点服务器地址，本机节点不需要更改";left=35;top=60;right=249;bottom=82;notify=1;transparent=1;z=7};
-walletPath={cls="edit";text="kaspawallet.exe";left=34;top=28;right=229;bottom=51;edge=1;multiline=1;z=2}
+static2={cls="static";text="密码";left=301;top=230;right=422;bottom=250;transparent=1;z=17};
+static3={cls="static";text="金额";left=44;top=327;right=147;bottom=347;transparent=1;z=18};
+static4={cls="static";text="目标账户";left=226;top=326;right=329;bottom=346;transparent=1;z=19};
+taddress={cls="edit";text="kaspa:xxxxx";left=225;top=347;right=495;bottom=367;edge=1;z=15};
+walletPath={cls="edit";text="D:\kaspa\kaspawallet.exe";left=34;top=28;right=229;bottom=51;edge=1;multiline=1;z=2}
 )
 /*}}*/
 
@@ -21,7 +30,7 @@ import process.popen
 import console
 import thread
 
-winform.edit.text = winForm.serverAddress.text;
+//winform.edit.text = winForm.serverAddress.text;
 var prcs=null;
 
 winform.button.oncommand = function(id,event){
@@ -30,9 +39,14 @@ winform.button.oncommand = function(id,event){
 
 winform.butS.oncommand = function(id,event){
 	
+	
+	
+	
 	if(prcs != null){
 		winform.logs.appendText("Is on");
-		return ; 
+		//winform.logs.appendText(tostring(prcs.read(0)));
+		prcs.terminate();
+		prcs=null
 	}
 	
 	if(string.len(winform.edit.text)>1){
@@ -98,10 +112,53 @@ winform.button4.oncommand = function(id,event){
 		winform.msgbox("选择正确的钱包exe")
 	}
 	for( all,out,err in pcss.each() ){
-			//console.log( out,"error:",err );
 			winform.logs.appendText(all);
-			//winform.logs.vScroll(7/*_SB_BOTTOM*/);
-			//mainForm.logs.appendText(out);
+	}
+}
+
+winform.button5.oncommand = function(id,event){
+	var pcss = process.popen(winform.walletPath.text, winform.walletPath.text+ "  balance");
+	winform.logs.text=""
+	if(pcss==null){
+		winform.msgbox("选择正确的钱包exe")
+	}
+	for( all,out,err in pcss.each() ){
+			winform.logs.appendText(all);
+	}
+}
+
+winform.button6.oncommand = function(id,event){
+	
+	var args=" dump-unencrypted-data"
+	
+	if( string.len(winform.pass.text) >=0){
+		args = args + " -p "+ winform.pass.text;
+	}
+	
+	var pcss = process.popen(winform.walletPath.text, winform.walletPath.text+ args);
+	winform.logs.text=""
+	if(pcss==null){
+		winform.msgbox("选择正确的钱包exe")
+	}
+	for( all,out,err in pcss.each() ){
+			winform.logs.appendText(all);
+	}
+}
+
+winform.button7.oncommand = function(id,event){
+	var args=" send" + " -t " + winform.taddress.text + " -v " + winform.amount.text;
+	
+	if( string.len(winform.pass.text) >=0){
+		args = args + " -p "+ winform.pass.text;
+	}
+	
+	var pcss = process.popen(winform.walletPath.text, winform.walletPath.text+ args);
+	winform.logs.text=""
+	if(pcss==null){
+		winform.msgbox("选择正确的钱包exe")
+	}
+	for( all,out,err in pcss.each() ){
+			winform.logs.appendText(all);
 	}
 }
 

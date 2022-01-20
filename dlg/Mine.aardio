@@ -1,14 +1,23 @@
 import win.ui;
 /*DSG{{*/
-winForm = win.form(text="Miner配置";right=524;bottom=489)
+winForm = win.form(text="Miner配置";right=839;bottom=489)
 winForm.add(
 address={cls="edit";text="kaspa:qpjrxsq6e06l09agkj7qyzqz59ydxvvlqlf7gmu6q5mm4au0j0de2rr9dk3qv";left=30;top=59;right=260;bottom=83;edge=1;multiline=1;z=2};
 devAdress={cls="edit";text="kaspa:qpjrxsq6e06l09agkj7qyzqz59ydxvvlqlf7gmu6q5mm4au0j0de2rr9dk3qv";left=27;top=350;right=257;bottom=374;bgcolor=10789024;color=12639424;edge=1;multiline=1;z=10};
-extraArg={cls="edit";left=30;top=159;right=260;bottom=274;edge=1;multiline=1;z=14};
+edit={cls="edit";text="--cuda-device <CUDA_DEVICE> 
+--cuda-disable 
+ --cuda-workload <CUDA_WORKLOAD> 
+ --cuda-workload-absolute";left=541;top=69;right=806;bottom=184;edge=1;multiline=1;z=16};
+edit2={cls="edit";text="--experimental-amd 
+  --opencl-device 
+ --opencl-enable 
+ --opencl-workload <OPENCL_WORKLOAD> 
+ --opencl-workload-absolute";left=541;top=214;right=806;bottom=350;edge=1;multiline=1;z=17};
+extraArg={cls="edit";text="--cuda-workload 80";left=30;top=159;right=260;bottom=205;edge=1;multiline=1;z=14};
 kernelbutton={cls="button";text="选择核心";left=288;top=27;right=377;bottom=53;z=5};
 path={cls="edit";text="kaspa-miner";left=30;top=28;right=260;bottom=51;edge=1;z=4};
 portion={cls="edit";text="0.5";left=27;top=383;right=257;bottom=407;edge=1;num=1;z=12};
-serverAddress={cls="edit";left=30;top=90;right=260;bottom=114;edge=1;multiline=1;z=6};
+serverAddress={cls="edit";text="65.21.179.242";left=30;top=90;right=260;bottom=114;edge=1;multiline=1;z=6};
 serverPort={cls="edit";left=30;top=122;right=260;bottom=146;edge=1;multiline=1;z=8};
 startButton={cls="button";text="开始（Begin）";left=201;top=440;right=364;bottom=474;z=1};
 static={cls="static";text="节点服务器地址（本机默认为空）";left=287;top=93;right=481;bottom=115;align="center";notify=1;transparent=1;z=7};
@@ -16,12 +25,15 @@ static2={cls="static";text="地址";left=288;top=65;right=377;bottom=87;align="c
 static3={cls="static";text="节点服务器端口（本机默认为空）";left=288;top=129;right=482;bottom=151;align="center";notify=1;transparent=1;z=9};
 static4={cls="static";text="赞助地址";left=272;top=352;right=361;bottom=374;align="center";notify=1;transparent=1;z=11};
 static5={cls="static";text="赞助比例(不想的话调成0即可）";left=272;top=385;right=478;bottom=407;align="center";notify=1;transparent=1;z=13};
-static6={cls="static";text="附加参数";left=222;top=161;right=416;bottom=183;align="center";notify=1;transparent=1;z=15}
+static6={cls="static";text="附加参数(在这里输入）";left=260;top=163;right=454;bottom=185;align="center";notify=1;transparent=1;z=15};
+static7={cls="static";text="A卡可附加参数";left=541;top=191;right=672;bottom=214;transparent=1;z=18};
+static8={cls="static";text="N卡可附加参数";left=541;top=47;right=672;bottom=70;transparent=1;z=19}
 )
 /*}}*/
 
 import fsys.dlg;
 import process
+
 
 
 
@@ -47,7 +59,9 @@ winForm.startButton.oncommand = function(id,event){
 	var arg1 = string.concat(" --devfund=",winForm.devAdress.text)
 	var arg2 = string.concat(" --devfund-percent=",winForm.portion.text)
 	
-	arg= string.concat(arg,arg1,arg2)
+	var arge= "  "+ winForm.extraArg.text 
+	
+	arg= string.concat(arg,arg1,arg2,arge)
 	
 	if( tonumber(winForm.portion.text) <=0){
 		winForm.portion.showInfoTip("行吧，行吧");
@@ -57,7 +71,7 @@ winForm.startButton.oncommand = function(id,event){
 	//io.print(arg)
 	
 	var prcs = process( winForm.path.text, arg);
-	execute("pause")
+	//execute("pause")
 	
 }
 
